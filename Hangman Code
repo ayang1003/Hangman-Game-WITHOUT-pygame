@@ -1,0 +1,71 @@
+"""
+This program allows you to play
+a basic version of Hangman with
+6 tries and multiple words
+"""
+
+# makes the words random
+import random
+
+# list of possible random words
+WORDS = ["ORANGE", "SHAKESPEARE", "TRUCK", "PAINTING", "ROAD", "WINDOW", "BRAZIL"
+, "CREAM", "TUXEDO", "HUNGARY", "ELEPHANT", "UMBRELLA", "FRAGRANT", "GUILD", "SOCKS",
+"CUBE", "DEER", "GOBLET", "MARKER", "UMPIRE", "AXOLOTL", "LIGHTS", "ZOOLOGY", "QUARELL"
+, "DENTIST", "INFOGRAPHIC", "POSTER", "NIGHT", "BIOLOGY", "WINTER", "KILIMANJARO"]
+
+# determines which random word from the list will be the answer
+answer = random.choice(WORDS)
+
+# slots represents the empty spaces
+slots = []
+
+# blank list for storing used letters
+used_words = []
+
+slots.extend(answer)
+
+used_words.extend(slots)
+
+# makes it so that the number of slots are equal to the number of letters in the word
+for i in range (len(slots)):
+    slots[i] = "_"
+
+# puts a space between each empty space
+print(" ".join(slots))
+
+def new_game():
+    print("Welcome to Hangman! Published by: Andrew Yang")
+    letters = 0
+    lives = 6
+    # keeps the game program running while the user still has one or more lives
+    # and also while the letters haven't been correctly guessed yet
+    while letters < len(answer) and lives > 0:
+        guess = input("Please guess a letter: ")
+        guess = guess.upper()
+        for i in range(len(answer)):
+            # adds a correct letter that you have guessed
+            if guess == answer[i] and guess in used_words:
+                slots[i] = guess
+                letters += 1
+                used_words.remove(guess)
+        # removes a life if a letter is guessed incorrectly
+        if guess not in slots:
+            lives -= 1
+            print("Sorry, wrong guess.")
+        # tells how many correct letters have been guessed so far
+        print("You have guessed " + str(letters) + " correct letter(s) so far.")
+        print("You have " + str(lives) + " incorrect attempts left")
+        print(" ".join(slots))
+    # displays congratulatory message if word is guessed correctly, otherwise
+    # shows a non-congratulatory message
+    if letters == len(answer):
+        print("<==========================================>")
+        print("   Congratulations! You guessed the word!")
+        print("<==========================================>")
+    else:
+        print("The correct word was " + answer + ".")
+        print("<==========================================>")
+        print("      You lost. Better luck next time!")
+        print("<==========================================>")
+
+new_game()
